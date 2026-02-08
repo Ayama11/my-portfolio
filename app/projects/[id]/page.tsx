@@ -4,11 +4,13 @@ import Footer from "@/components/Footer";
 import { PROJECTS } from "@/lib/data";
 
 type Props = {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 };
 
-export default function ProjectDetails({ params }: Props) {
-  const project = PROJECTS.find((p) => p.id === params.id);
+export default async function ProjectDetails({ params }: Props) {
+  const { id } = await params;
+
+  const project = PROJECTS.find((p) => p.id === id);
 
   if (!project) {
     return (
@@ -48,10 +50,7 @@ export default function ProjectDetails({ params }: Props) {
             {project.description}
           </p>
 
-          <div
-            className="mt-6 rounded-2xl overflow-hidden border"
-            style={{ borderColor: "rgb(var(--border))" }}
-          >
+          <div className="mt-6 rounded-2xl overflow-hidden border" style={{ borderColor: "rgb(var(--border))" }}>
             <img
               src={project.image}
               alt={project.title}
