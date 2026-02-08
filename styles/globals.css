@@ -2,25 +2,34 @@
 @tailwind components;
 @tailwind utilities;
 
+/* -----------------------------
+   Theme tokens via CSS variables
+------------------------------ */
 :root {
-  --bg: 10 12 18;
-  --card: 18 22 32;
-  --text: 237 242 255;
-  --muted: 164 176 196;
-  --border: 255 255 255;
-  --accent: 120 155 255;
-  --accent2: 154 107 255;
+  --bg: 255 255 255;
+  --bg2: 246 247 251;
+  --card: 255 255 255;
+  --text: 12 18 28;
+  --muted: 92 104 124;
+  --border: 228 232 240;
+  --primary: 124 58 237; /* violet */
+  --ring: 124 58 237;
+  --shadow: 0 20px 60px rgba(16, 24, 40, 0.12);
 }
 
-[data-theme="light"] {
-  --bg: 246 247 251;
-  --card: 255 255 255;
-  --text: 20 24 34;
-  --muted: 90 100 120;
-  --border: 0 0 0;
-  --accent: 43 110 255;
-  --accent2: 122 62 255;
+html[data-theme="dark"] {
+  --bg: 7 10 18;
+  --bg2: 10 14 24;
+  --card: 14 18 30;
+  --text: 231 236 246;
+  --muted: 152 165 190;
+  --border: 32 41 60;
+  --primary: 108 99 255;
+  --ring: 108 99 255;
+  --shadow: 0 30px 90px rgba(0, 0, 0, 0.55);
 }
+
+* { box-sizing: border-box; }
 
 html, body {
   height: 100%;
@@ -28,47 +37,51 @@ html, body {
 
 body {
   color: rgb(var(--text));
-  background: radial-gradient(1200px 600px at 20% 10%, rgba(var(--accent), .18), transparent 55%),
-              radial-gradient(900px 500px at 80% 25%, rgba(var(--accent2), .16), transparent 60%),
-              rgb(var(--bg));
+  background:
+    radial-gradient(1200px 600px at 10% 10%, rgba(var(--primary), 0.18), transparent 55%),
+    radial-gradient(900px 500px at 90% 20%, rgba(45, 212, 191, 0.10), transparent 55%),
+    linear-gradient(180deg, rgb(var(--bg)), rgb(var(--bg2)));
+  transition: background 250ms ease, color 250ms ease;
 }
 
 ::selection {
-  background: rgba(var(--accent), .25);
+  background: rgba(var(--primary), 0.25);
 }
 
 @layer components {
-  .glass {
-    background: rgba(var(--card), .60);
-    border: 1px solid rgba(var(--border), .08);
-    backdrop-filter: blur(14px);
+  .container-max { @apply mx-auto w-full max-w-6xl px-4 sm:px-6; }
+
+  .card {
+    background: rgba(var(--card), 0.78);
+    border: 1px solid rgb(var(--border));
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(10px);
+    border-radius: 24px;
   }
 
   .btn {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2 text-sm font-medium transition;
-    border: 1px solid rgba(var(--border), .12);
-    background: rgba(var(--card), .55);
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition;
+    border: 1px solid rgb(var(--border));
+    background: rgba(var(--card), 0.7);
   }
-  .btn:hover { transform: translateY(-1px); border-color: rgba(var(--border), .20); }
+
+  .btn:hover { transform: translateY(-1px); }
+  .btn:active { transform: translateY(0px); }
 
   .btn-primary {
-    @apply btn;
-    background: linear-gradient(135deg, rgba(var(--accent), .95), rgba(var(--accent2), .95));
+    background: linear-gradient(135deg, rgba(var(--primary), 1), rgba(45, 212, 191, 0.9));
+    border: none;
     color: white;
-    border: 0;
+    box-shadow: 0 16px 40px rgba(var(--primary), 0.28);
   }
 
-  .chip {
+  .pill {
     @apply inline-flex items-center rounded-full px-3 py-1 text-xs font-medium;
-    background: rgba(var(--accent), .14);
-    border: 1px solid rgba(var(--accent), .22);
-    color: rgb(var(--text));
+    border: 1px solid rgb(var(--border));
+    color: rgb(var(--muted));
+    background: rgba(var(--card), 0.55);
   }
 
-  .section-title {
-    @apply text-2xl sm:text-3xl font-semibold tracking-tight;
-  }
-  .section-subtitle {
-    @apply text-sm sm:text-base text-[rgb(var(--muted))] mt-2;
-  }
+  .section-title { @apply text-2xl sm:text-3xl font-semibold tracking-tight; }
+  .section-sub { color: rgb(var(--muted)); }
 }
