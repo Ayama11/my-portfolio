@@ -1,18 +1,33 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { PROJECTS } from "@/lib/data";
 
-// (اختياري) يخليها مناسبة للـ static output إذا بدك
-// export const dynamic = "force-static";
+type Props = {
+  params: { id: string };
+};
 
-export default function ProjectDetails({ params }: { params: { id: string } }) {
+export default function ProjectDetails({ params }: Props) {
   const project = PROJECTS.find((p) => p.id === params.id);
 
-  // أنظف مع Next + SEO أفضل
   if (!project) {
-    notFound();
+    return (
+      <>
+        <Header />
+        <main className="container-max pt-10">
+          <div className="card p-8">
+            <h1 className="text-2xl font-semibold">Project not found</h1>
+            <p className="mt-2" style={{ color: "rgb(var(--muted))" }}>
+              The requested project does not exist.
+            </p>
+            <Link href="/#projects" className="btn mt-6">
+              Back to Projects
+            </Link>
+          </div>
+        </main>
+        <Footer />
+      </>
+    );
   }
 
   const { full } = project;
@@ -20,7 +35,6 @@ export default function ProjectDetails({ params }: { params: { id: string } }) {
   return (
     <>
       <Header />
-
       <main className="container-max pt-8 sm:pt-12">
         <div className="card p-6 sm:p-10">
           <Link href="/#projects" className="btn mb-6 w-fit">
@@ -30,7 +44,6 @@ export default function ProjectDetails({ params }: { params: { id: string } }) {
           <h1 className="text-2xl sm:text-4xl font-semibold tracking-tight">
             {project.title}
           </h1>
-
           <p className="mt-2 text-base sm:text-lg" style={{ color: "rgb(var(--muted))" }}>
             {project.description}
           </p>
@@ -42,7 +55,6 @@ export default function ProjectDetails({ params }: { params: { id: string } }) {
             <img
               src={project.image}
               alt={project.title}
-              loading="lazy"
               className="w-full h-auto max-h-[70vh] object-contain bg-black/5"
             />
           </div>
@@ -53,13 +65,11 @@ export default function ProjectDetails({ params }: { params: { id: string } }) {
                 View Demo
               </a>
             )}
-
             {project.githubUrl && (
               <a className="btn" href={project.githubUrl} target="_blank" rel="noreferrer">
                 GitHub
               </a>
             )}
-
             {project.hfUrl && (
               <a className="btn" href={project.hfUrl} target="_blank" rel="noreferrer">
                 Hugging Face
@@ -77,7 +87,6 @@ export default function ProjectDetails({ params }: { params: { id: string } }) {
           </div>
         </div>
       </main>
-
       <Footer />
     </>
   );
