@@ -9,7 +9,6 @@ type Props = {
 
 export default async function ProjectDetails({ params }: Props) {
   const { id } = await params;
-
   const project = PROJECTS.find((p) => p.id === id);
 
   if (!project) {
@@ -37,7 +36,7 @@ export default async function ProjectDetails({ params }: Props) {
   return (
     <>
       <Header />
-      <main className="container-max pt-8 sm:pt-12">
+      <main className="container-max pt-8 sm:pt-12 pb-12">
         <div className="card p-6 sm:p-10">
           <Link href="/#projects" className="btn mb-6 w-fit">
             ← Back
@@ -55,6 +54,7 @@ export default async function ProjectDetails({ params }: Props) {
               src={project.image}
               alt={project.title}
               className="w-full h-auto max-h-[70vh] object-contain bg-black/5"
+              loading="lazy"
             />
           </div>
 
