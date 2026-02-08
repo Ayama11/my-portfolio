@@ -1,32 +1,30 @@
-import ThemeToggle from "./ThemeToggle";
-import { links } from "@/lib/data";
+import Link from "next/link";
+import ThemeToggle from "@/components/ThemeToggle";
+import { SOCIALS } from "@/lib/data";
+import { IconGithub, IconLinkedIn } from "@/components/icons";
 
 export default function Header() {
   return (
     <header className="sticky top-0 z-50">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 py-3">
-        <div className="glass shadow-glow rounded-2xl px-4 py-3 flex items-center justify-between">
-          <a href="#home" className="flex items-center gap-2 font-semibold">
-            <span className="inline-block h-2 w-2 rounded-full"
-              style={{ background: "rgba(var(--accent),1)" }}
-            />
+      <div className="container-max pt-4">
+        <div className="card px-4 sm:px-6 py-3 flex items-center justify-between">
+          <Link href="/" className="font-semibold tracking-tight">
             Aya Almalla
-          </a>
+          </Link>
 
-          <nav className="hidden md:flex items-center gap-6 text-sm text-[rgb(var(--muted))]">
-            <a className="hover:text-[rgb(var(--text))]" href="#about">About</a>
-            <a className="hover:text-[rgb(var(--text))]" href="#skills">Skills</a>
-            <a className="hover:text-[rgb(var(--text))]" href="#experience">Experience</a>
-            <a className="hover:text-[rgb(var(--text))]" href="#projects">Projects</a>
-            <a className="hover:text-[rgb(var(--text))]" href="#contact">Contact</a>
+          <nav className="hidden md:flex items-center gap-6 text-sm" style={{ color: "rgb(var(--muted))" }}>
+            <a href="#about" className="hover:opacity-80">About</a>
+            <a href="#skills" className="hover:opacity-80">Skills</a>
+            <a href="#projects" className="hover:opacity-80">Projects</a>
+            <a href="#contact" className="hover:opacity-80">Contact</a>
           </nav>
 
           <div className="flex items-center gap-2">
-            <a className="btn hidden sm:inline-flex" href={links.github} target="_blank" rel="noreferrer">
-              GitHub
+            <a className="btn w-10 h-10 p-0" href={SOCIALS.github} target="_blank" rel="noreferrer" aria-label="GitHub">
+              <IconGithub className="h-5 w-5" />
             </a>
-            <a className="btn hidden sm:inline-flex" href={links.linkedin} target="_blank" rel="noreferrer">
-              LinkedIn
+            <a className="btn w-10 h-10 p-0" href={SOCIALS.linkedin} target="_blank" rel="noreferrer" aria-label="LinkedIn">
+              <IconLinkedIn className="h-5 w-5" />
             </a>
             <ThemeToggle />
           </div>
