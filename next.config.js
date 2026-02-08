@@ -1,12 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: "export",
+  trailingSlash: true,
   images: {
-    remotePatterns: [
-      { protocol: "https", hostname: "app.trickle.so" },
-      { protocol: "https", hostname: "huggingface.co" },
-      { protocol: "https", hostname: "drive.google.com" }
-    ]
-  }
+    unoptimized: true,
+  },
 };
 
 module.exports = nextConfig;
