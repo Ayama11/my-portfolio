@@ -1,31 +1,44 @@
 "use client";
 
-import React from "react";
+import * as React from "react";
+import { IconMoon, IconSun } from "@/components/icons";
+
+type Theme = "light" | "dark";
+
+function getInitialTheme(): Theme {
+  if (typeof window === "undefined") return "light";
+  const saved = window.localStorage.getItem("theme") as Theme | null;
+  if (saved === "light" || saved === "dark") return saved;
+  const prefersDark = window.matchMedia?.("(prefers-color-scheme: dark)")?.matches;
+  return prefersDark ? "dark" : "light";
+}
 
 export default function ThemeToggle() {
-  const [theme, setTheme] = React.useState<"dark" | "light">("dark");
+  const [theme, setTheme] = React.useState<Theme>("light");
 
   React.useEffect(() => {
-    const saved = (localStorage.getItem("theme") as "dark" | "light") || "dark";
-    setTheme(saved);
-    document.documentElement.setAttribute("data-theme", saved);
+    const t = getInitialTheme();
+    setTheme(t);
+    document.documentElement.setAttribute("data-theme", t);
   }, []);
 
   const toggle = () => {
-    const next = theme === "dark" ? "light" : "dark";
+    const next: Theme = theme === "dark" ? "light" : "dark";
     setTheme(next);
-    localStorage.setItem("theme", next);
     document.documentElement.setAttribute("data-theme", next);
+    window.localStorage.setItem("theme", next);
   };
 
   return (
     <button
       onClick={toggle}
-      className="btn h-9 w-9 rounded-full px-0"
+      className="btn w-10 h-10 p-0"
       aria-label="Toggle theme"
       title="Toggle theme"
+      type="button"
+      style={{ borderRadius: 999 }}
     >
-      {theme === "dark" ? "☾" : "☀"}
+      {theme === "dark" ? <IconSun className="h-5 w-5" /> : <IconMoon className="h-5 w-5" />}
     </button>
   );
 }
