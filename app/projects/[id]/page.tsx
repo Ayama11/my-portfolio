@@ -3,19 +3,23 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { PROJECTS } from "@/lib/data";
 
-type Props = {
-  params: Promise<{ id: string }>;
-};
+export const dynamicParams = false;
 
-export default async function ProjectDetails({ params }: Props) {
-  const { id } = await params;
-  const project = PROJECTS.find((p) => p.id === id);
+// ✅ مهم للـ Static Export: يخلي Next يبني صفحات لكل id
+export function generateStaticParams() {
+  return PROJECTS.map((p) => ({ id: p.id }));
+}
+
+type Props = { params: { id: string } };
+
+export default function ProjectDetails({ params }: Props) {
+  const project = PROJECTS.find((p) => p.id === params.id);
 
   if (!project) {
     return (
       <>
         <Header />
-        <main className="container-max pt-10">
+        <main className="container-max pt-10 pb-14">
           <div className="card p-8">
             <h1 className="text-2xl font-semibold">Project not found</h1>
             <p className="mt-2" style={{ color: "rgb(var(--muted))" }}>
@@ -36,15 +40,13 @@ export default async function ProjectDetails({ params }: Props) {
   return (
     <>
       <Header />
-      <main className="container-max pt-8 sm:pt-12 pb-12">
+      <main className="container-max pt-8 sm:pt-12 pb-14">
         <div className="card p-6 sm:p-10">
           <Link href="/#projects" className="btn mb-6 w-fit">
             ← Back
           </Link>
 
-          <h1 className="text-2xl sm:text-4xl font-semibold tracking-tight">
-            {project.title}
-          </h1>
+          <h1 className="text-2xl sm:text-4xl font-semibold tracking-tight">{project.title}</h1>
           <p className="mt-2 text-base sm:text-lg" style={{ color: "rgb(var(--muted))" }}>
             {project.description}
           </p>
