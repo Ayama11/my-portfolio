@@ -1,27 +1,18 @@
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { PROJECTS } from "@/lib/data";
 
+// (اختياري) يخليها مناسبة للـ static output إذا بدك
+// export const dynamic = "force-static";
+
 export default function ProjectDetails({ params }: { params: { id: string } }) {
   const project = PROJECTS.find((p) => p.id === params.id);
 
+  // أنظف مع Next + SEO أفضل
   if (!project) {
-    return (
-      <>
-        <Header />
-        <main className="container-max pt-10">
-          <div className="card p-8">
-            <h1 className="text-2xl font-semibold">Project not found</h1>
-            <p className="mt-2" style={{ color: "rgb(var(--muted))" }}>
-              The requested project does not exist.
-            </p>
-            <Link href="/#projects" className="btn mt-6">Back to Projects</Link>
-          </div>
-        </main>
-        <Footer />
-      </>
-    );
+    notFound();
   }
 
   const { full } = project;
@@ -29,28 +20,50 @@ export default function ProjectDetails({ params }: { params: { id: string } }) {
   return (
     <>
       <Header />
+
       <main className="container-max pt-8 sm:pt-12">
         <div className="card p-6 sm:p-10">
-          <Link href="/#projects" className="btn mb-6 w-fit">← Back</Link>
+          <Link href="/#projects" className="btn mb-6 w-fit">
+            ← Back
+          </Link>
 
-          <h1 className="text-2xl sm:text-4xl font-semibold tracking-tight">{project.title}</h1>
+          <h1 className="text-2xl sm:text-4xl font-semibold tracking-tight">
+            {project.title}
+          </h1>
+
           <p className="mt-2 text-base sm:text-lg" style={{ color: "rgb(var(--muted))" }}>
             {project.description}
           </p>
 
-          <div className="mt-6 rounded-2xl overflow-hidden border" style={{ borderColor: "rgb(var(--border))" }}>
-            <img src={project.image} alt={project.title} className="w-full h-auto max-h-[70vh] object-contain bg-black/5" />
+          <div
+            className="mt-6 rounded-2xl overflow-hidden border"
+            style={{ borderColor: "rgb(var(--border))" }}
+          >
+            <img
+              src={project.image}
+              alt={project.title}
+              loading="lazy"
+              className="w-full h-auto max-h-[70vh] object-contain bg-black/5"
+            />
           </div>
 
           <div className="mt-6 flex flex-col sm:flex-row gap-3">
             {project.demoUrl && project.demoUrl !== "#" && (
-              <a className="btn btn-primary" href={project.demoUrl} target="_blank" rel="noreferrer">View Demo</a>
+              <a className="btn btn-primary" href={project.demoUrl} target="_blank" rel="noreferrer">
+                View Demo
+              </a>
             )}
+
             {project.githubUrl && (
-              <a className="btn" href={project.githubUrl} target="_blank" rel="noreferrer">GitHub</a>
+              <a className="btn" href={project.githubUrl} target="_blank" rel="noreferrer">
+                GitHub
+              </a>
             )}
+
             {project.hfUrl && (
-              <a className="btn" href={project.hfUrl} target="_blank" rel="noreferrer">Hugging Face</a>
+              <a className="btn" href={project.hfUrl} target="_blank" rel="noreferrer">
+                Hugging Face
+              </a>
             )}
           </div>
 
@@ -64,6 +77,7 @@ export default function ProjectDetails({ params }: { params: { id: string } }) {
           </div>
         </div>
       </main>
+
       <Footer />
     </>
   );
